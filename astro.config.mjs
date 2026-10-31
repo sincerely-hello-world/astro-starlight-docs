@@ -4,6 +4,8 @@ import starlight from '@astrojs/starlight';
 
 // https://astro.build/config
 export default defineConfig({
+	site: 'https://sincerely-hello-world.github.io',
+	base: '/astro-starlight-docs',
 	// FileTree uses satteri's native binding; keep it in Node during prerendering.
 	vite: { ssr: { external: ['satteri'] } },
 	integrations: [

@@ -72,7 +72,20 @@ locales: {
 3. 检查代码块是否标注了语言，内部链接是否指向存在的页面。
 4. 确认公开仓库中没有访问密钥或未准备公开的内容。
 
-GitHub 公开仓库用于托管源码，**不会自动把文档站部署到 GitHub Pages**。部署时还要根据实际域名和路径配置 `site` / `base`，并设置部署流程。
+## GitHub Pages 自动发布
+
+本项目已配置 `.github/workflows/deploy.yml`。每次推送到 `main`，GitHub Actions 会使用 Node.js 24 与 pnpm 11.23.0 安装锁定的依赖、构建文档，再将构建产物发布到 GitHub Pages。也可以在 Actions 页面使用 **Run workflow** 手动发布。
+
+- 在线地址：[Astro 文档实验室](https://sincerely-hello-world.github.io/astro-starlight-docs/)
+- 构建记录：[GitHub Actions](https://github.com/sincerely-hello-world/astro-starlight-docs/actions/workflows/deploy.yml)
+- 首次设置：仓库 **Settings → Pages → Source** 选择 **GitHub Actions**。
+
+```js title="astro.config.mjs · 发布地址"
+site: 'https://sincerely-hello-world.github.io',
+base: '/astro-starlight-docs',
+```
+
+本地预览和线上页面都使用 `/astro-starlight-docs/` 前缀。正文链接、首页按钮以及 MDX 的 `href` 都需要包含此前缀；侧边栏的 `slug` 和自动生成的 `directory` 仍使用文档标识，不加 `base`。若构建失败，不会执行发布，已有站点会继续提供服务。
 
 ## 官方参考
 
