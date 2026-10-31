@@ -21,7 +21,7 @@ pnpm build
 pnpm preview
 ```
 
-构建产物位于 `dist/`。生产搜索在构建后的预览中验证。
+构建产物位于 `dist/`；同一次构建还会生成用于 Cloudflare Workers 的 `dist-cloudflare/`。生产搜索在构建后的预览中验证。
 
 ## 示例内容
 
@@ -63,8 +63,24 @@ MDX 示例覆盖当前 Starlight 导出的全部 12 个正文组件：`Aside`、
 
 `astro.config.mjs` 已设置 `site` 与 `base`。添加站内链接时使用 `/astro-starlight-docs/` 前缀；Starlight 侧边栏的 `slug` 保持不带此前缀。
 
+## 发布到 Cloudflare Workers
+
+连接同一个 GitHub 仓库，生产分支选择 `main`，使用 Node.js 24，并填写：
+
+| 配置 | 命令 |
+| --- | --- |
+| Build command | `pnpm run build` |
+| Deploy command | `npx wrangler@latest deploy` |
+| Preview command | `npx wrangler@latest preview` |
+
+`wrangler.jsonc` 发布 `dist-cloudflare/`。构建脚本把页面和资源放入真实的 `astro-starlight-docs/` 子目录，使站内链接与 GitHub Pages 共用同一前缀；域名根路径通过 `_redirects` 跳转到 `/astro-starlight-docs/`。
+
+此方式不使用需要账户开通的非根路径 `assets.base_path`。遇到错误 `100343` 时，确认构建使用的是包含此修复的最新提交。GitHub Pages 仍发布 `dist/`。
+
 ## 官方资料
 
 - [Astro 文档](https://docs.astro.build/zh-cn/)
 - [Starlight 文档](https://starlight.astro.build/zh-cn/)
 - [正文组件参考](https://starlight.astro.build/components/using-components/)
+- [Cloudflare Workers 静态资源](https://developers.cloudflare.com/workers/static-assets/)
+- [Cloudflare 静态资源重定向](https://developers.cloudflare.com/workers/static-assets/redirects/)
