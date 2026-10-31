@@ -1,0 +1,8 @@
+{
+  "name": "astro-starlight-docs",
+  "compatibility_date": "2026-10-31",
+  "assets": {
+    "directory": "./dist",
+    "base_path": "/astro-starlight-docs"
+  }
+}
