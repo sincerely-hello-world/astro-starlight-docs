@@ -1,0 +1,173 @@
+---
+title: 如何添加一篇文档
+description: 在当前项目中创建 Markdown 或 MDX 页面，配置导航，并验证构建。
+sidebar:
+  order: 1
+---
+
+import { FileTree, Steps } from '@astrojs/starlight/components';
+
+## 认识项目目录
+
+<FileTree>
+
+- public/ 原样发布的静态资源
+- src
+  - assets/ 可由 Astro 处理的图片
+  - content
+    - docs
+      - index.mdx 文档首页
+      - guides
+        - **adding-documents.mdx** 本页源码
+      - examples
+        - markdown.md 基础元素示例
+        - components.mdx 内置组件示例
+      - reference
+        - frontmatter.md 页面配置速查
+  - content.config.ts 内容集合定义
+- astro.config.mjs 站点标题、语言与导航
+- package.json 开发与构建命令
+
+</FileTree>
+
+本项目已使用 `docsLoader()` 与 `docsSchema()` 注册 `docs` 内容集合。添加普通文档时，直接在 `src/content/docs/` 中创建 `.md` 或 `.mdx` 文件即可，无需另外在 `src/pages/` 中创建路由。
+
+## 新建并预览页面
+
+<Steps>
+
+1. **在项目根目录安装依赖。**
+
+   本项目使用 `pnpm-lock.yaml`，统一使用 pnpm：
+
+   ```sh
+   pnpm install
+   ```
+
+2. **创建 `src/content/docs/guides/my-first-doc.md`。**
+
+   复制下面的完整模板。最上面的 YAML 区域叫 frontmatter，`title` 必填。
+
+   ```md title="src/content/docs/guides/my-first-doc.md"
+   ---
+   title: 我的第一篇文档
+   description: 说明这篇文档要帮助读者完成什么。
+   sidebar:
+     order: 2
+   ---
+
+   先用一两句话说明这篇文档的目标。
+
+   ## 使用前准备
+
+   - 安装项目依赖。
+   - 准备一份示例数据。
+
+   ## 操作步骤
+
+   1. 打开项目。
+   2. 修改内容并保存。
+
+   :::tip[小技巧]
+   将结果、步骤和常见问题写清楚，比堆砌配置更有帮助。
+   :::
+   ```
+
+3. **启动开发服务器。**
+
+   项目的开发约定使用后台服务：
+
+   ```sh
+   pnpm astro dev --background
+   pnpm astro dev status
+   ```
+
+   根据终端输出访问本地地址，默认是 `http://localhost:4321`。新页面的路径是 `/guides/my-first-doc/`。保存文件后，浏览器会更新。
+
+   ```sh title="查看日志与停止服务"
+   pnpm astro dev logs
+   pnpm astro dev stop
+   ```
+
+4. **确认侧边栏和目录。**
+
+   当前站点对 `guides`、`examples`、`reference` 使用自动导航，新页面会出现在对应分组中。用 frontmatter 的 `sidebar.order` 调整自动导航中的顺序；正文的二、三级标题会进入页内目录。
+
+5. **构建并检查生产页面。**
+
+   ```sh
+   pnpm build
+   pnpm preview
+   ```
+
+   打开预览地址，检查页面链接、代码高亮和组件交互。构建产物在 `dist/`；正式站点搜索也需要构建后预览。
+
+</Steps>
+
+## 文件名怎样变成地址
+
+以下示例以站点部署在域名根目录为前提。
+
+| 文档文件 | 页面地址 |
+| --- | --- |
+| `src/content/docs/index.mdx` | `/` |
+| `src/content/docs/guides/install.md` | `/guides/install/` |
+| `src/content/docs/guides/advanced/setup.mdx` | `/guides/advanced/setup/` |
+
+:::caution[路径与重命名]
+建议文件名使用英文小写和短横线，页面标题可以使用中文。重命名文件或修改 `slug` 会改变地址，需要同步检查站内链接。如果部署到 GitHub Pages 的仓库子路径，还要配置 Astro 的 `site`、`base`，并相应处理链接前缀。
+:::
+
+## 什么时候改用 MDX
+
+只需要正文、表格、代码和提示框时使用 `.md`。需要组件时使用 `.mdx`，在 frontmatter **之后**导入组件：
+
+```mdx title="src/content/docs/guides/my-component-doc.mdx"
+---
+title: 带组件的文档
+description: 使用内置提示框和链接卡片。
+---
+
+import { Aside, LinkCard } from '@astrojs/starlight/components';
+
+<Aside type="tip" title="直接使用内置组件">
+  Starlight 已集成 MDX 支持，无需为这些内置组件安装 React。
+</Aside>
+
+<LinkCard title="查看完整组件示例" href="/examples/components/" />
+```
+
+:::note[MDX 的特殊字符]
+MDX 会把花括号和标签当作表达式或组件语法。展示代码时请放进代码块；普通正文里的标签名称可以用行内代码包裹。组件内的 Markdown 列表与代码块前后应留空行。
+:::
+
+## 调整导航
+
+下面的配置片段位于 `astro.config.mjs` 的 `starlight({...})` 内，与当前项目的自动分组方式一致：
+
+```js title="astro.config.mjs · starlight 配置片段"
+sidebar: [
+  { label: '文档首页', slug: '' },
+  { label: '写作指南', items: [{ autogenerate: { directory: 'guides' } }] },
+  { label: '元素与组件示例', items: [{ autogenerate: { directory: 'examples' } }] },
+  { label: '参考手册', items: [{ autogenerate: { directory: 'reference' } }] },
+],
+```
+
+若希望完全手动控制导航，可把分组 `items` 中的自动生成项替换成具体页面。只有文件确实存在时，才加入对应的 `slug`：
+
+```js
+{
+  label: '写作指南',
+  items: [
+    { label: '添加文档', slug: 'guides/adding-documents' },
+  ],
+},
+```
+
+## 下一步与官方资料
+
+- [Markdown 元素示例](/examples/markdown/)：复制常用内容语法。
+- [MDX 内置组件示例](/examples/components/)：查看全部正文组件。
+- [页面配置速查](/reference/frontmatter/)：修改排序、目录和草稿状态。
+- 官方：[Astro 内容集合](https://docs.astro.build/en/guides/content-collections/)、[Starlight 页面](https://starlight.astro.build/guides/pages/)、[侧边栏导航](https://starlight.astro.build/guides/sidebar/)。

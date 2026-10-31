@@ -1,0 +1,286 @@
+---
+title: Starlight 内置 MDX 组件
+description: 展示全部 12 个正文组件，包括提示框、徽章、卡片、代码、文件树、图标、按钮、步骤与标签页。
+sidebar:
+  order: 2
+  badge:
+    text: 组件集
+    variant: tip
+---
+
+import {
+  Aside, Badge, Card, CardGrid, Code, FileTree,
+  Icon, LinkButton, LinkCard, Steps, TabItem, Tabs,
+} from '@astrojs/starlight/components';
+import exampleCode from '../../../examples/hello.ts?raw';
+
+## 使用前先导入
+
+本页根据项目安装的 Starlight `0.42.8` 的 `@astrojs/starlight/components` 导出核对，共有 **12 个正文组件**。它们随 Starlight 提供，在 `.mdx` 文件中按需导入即可。这里的“内置”指无需额外安装组件库，仍然需要写 `import`。
+
+```mdx
+import {
+  Aside, Badge, Card, CardGrid, Code, FileTree,
+  Icon, LinkButton, LinkCard, Steps, TabItem, Tabs,
+} from '@astrojs/starlight/components';
+```
+
+| 组件 | 常见用途 | 常用参数或内容 |
+| --- | --- | --- |
+| `Aside` | 说明、技巧、警告 | `type`、`title`、`icon` |
+| `Badge` | 状态或版本徽章 | `text`、`variant`、`size` |
+| `Card` | 展示一段重点信息 | `title`、`icon` |
+| `CardGrid` | 排列多张卡片 | 可选 `stagger` |
+| `LinkCard` | 站内外入口卡片 | `title`、`href`、`description` |
+| `LinkButton` | 主要操作链接 | `href`、`variant`、`icon` |
+| `Code` | 渲染字符串或导入文件 | `code`、`lang`、`title` |
+| `FileTree` | 展示目录结构 | 嵌套无序列表 |
+| `Icon` | 展示内置图标 | `name`、`label`、`size` |
+| `Steps` | 分步骤操作教程 | Markdown 有序列表 |
+| `Tabs` | 一组标签页 | 可选 `syncKey` |
+| `TabItem` | 单个标签页 | `label`、可选 `icon` |
+
+这些是用于正文的组件。页头、导航、搜索等站点界面组件属于[组件覆盖机制](https://starlight.astro.build/guides/overriding-components/)，用途不同。
+
+## 提示框 Aside
+
+<Aside type="tip" title="适合组合组件的提示">
+
+在 MDX 中可将 **Markdown 内容**或其他组件放入 `Aside`。纯文字提示也可以继续使用 Markdown 的三冒号指令。
+
+</Aside>
+
+<Aside type="caution" title="警告示例">
+  发布前请检查示例中的路径和命令是否适合自己的项目。
+</Aside>
+
+```mdx
+import { Aside } from '@astrojs/starlight/components';
+
+<Aside type="tip" title="提示">
+  这里可以写 **Markdown** 内容。
+</Aside>
+
+<Aside type="caution" title="警告">
+  警告类型使用 caution。
+</Aside>
+```
+
+`type` 可选 `note`、`tip`、`caution`、`danger`，默认 `note`。
+
+## 徽章 Badge
+
+<Badge text="稳定版" variant="success" />{' '}
+<Badge text="新功能" variant="tip" />{' '}
+<Badge text="实验性" variant="caution" size="small" />
+
+```mdx
+import { Badge } from '@astrojs/starlight/components';
+
+<Badge text="稳定版" variant="success" />
+<Badge text="新功能" variant="tip" />
+<Badge text="实验性" variant="caution" size="small" />
+```
+
+`variant` 支持 `default`、`note`、`tip`、`caution`、`danger`、`success`；`size` 支持 `small`、`medium`、`large`。
+
+## 卡片 Card 与 CardGrid
+
+<CardGrid>
+  <Card title="先说明目标" icon="open-book">
+    让读者知道这篇文档能帮助完成什么。
+  </Card>
+  <Card title="再展示结果" icon="approve-check">
+    给出可以验证的输出，让读者确认操作成功。
+  </Card>
+</CardGrid>
+
+```mdx
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+<CardGrid>
+  <Card title="先说明目标" icon="open-book">
+    让读者知道这篇文档能帮助完成什么。
+  </Card>
+  <Card title="再展示结果" icon="approve-check">
+    给出可以验证的输出，让读者确认操作成功。
+  </Card>
+</CardGrid>
+```
+
+`CardGrid` 可以包裹 `Card` 或 `LinkCard`；添加 `stagger` 可使两列卡片错开，更适合首页展示。
+
+## 链接卡片 LinkCard
+
+<LinkCard title="从第一篇文档开始" href="/guides/adding-documents/" description="按步骤创建页面，并让它出现在侧边栏。" />
+
+```mdx
+import { LinkCard } from '@astrojs/starlight/components';
+
+<LinkCard
+  title="从第一篇文档开始"
+  href="/guides/adding-documents/"
+  description="按步骤创建页面，并让它出现在侧边栏。"
+/>
+```
+
+## 链接按钮 LinkButton
+
+<LinkButton href="/examples/markdown/" icon="right-arrow">查看 Markdown 示例</LinkButton>
+
+<LinkButton href="https://starlight.astro.build/components/using-components/" variant="secondary" icon="external">官方组件文档</LinkButton>
+
+```mdx
+import { LinkButton } from '@astrojs/starlight/components';
+
+<LinkButton href="/examples/markdown/" icon="right-arrow">
+  查看 Markdown 示例
+</LinkButton>
+<LinkButton
+  href="https://starlight.astro.build/components/using-components/"
+  variant="secondary"
+  icon="external"
+>
+  官方组件文档
+</LinkButton>
+```
+
+`variant` 支持 `primary`、`secondary`、`minimal`。它渲染的是链接，适合页面跳转。
+
+## 代码 Code
+
+固定示例通常直接写代码块。`Code` 适合展示字符串或真实源文件。本页导入 `src/examples/hello.ts`，这样示例文件更新时，展示的代码也会更新：
+
+<Code code={exampleCode} lang="ts" title="src/examples/hello.ts" />
+
+```mdx
+import { Code } from '@astrojs/starlight/components';
+import exampleCode from '../../../examples/hello.ts?raw';
+
+<Code code={exampleCode} lang="ts" title="src/examples/hello.ts" />
+```
+
+这里的相对路径适用于当前页面 `src/content/docs/examples/components.mdx`；复制到不同层级时要重新计算路径。`?raw` 将文件内容导入为字符串。
+
+## 文件树 FileTree
+
+<FileTree>
+
+- src
+  - content
+    - docs
+      - index.mdx 首页
+      - examples
+        - **components.mdx** 当前页面
+  - examples
+    - hello.ts 代码演示源文件
+- public/
+- astro.config.mjs 站点配置
+- …
+
+</FileTree>
+
+```mdx
+import { FileTree } from '@astrojs/starlight/components';
+
+<FileTree>
+
+- src
+  - content
+    - docs
+      - index.mdx 首页
+      - **example.mdx** 重点文件
+- public/
+- …
+
+</FileTree>
+```
+
+目录用嵌套无序列表表示，也可以在名字后加 `/`。加粗名称会突出显示，名称后的文字作为注释，`…` 表示省略项。点击目录旁的箭头可以折叠。
+
+## 图标 Icon
+
+<Icon name="open-book" label="文档" size="2rem" />{' '}
+<Icon name="approve-check" label="已完成" size="2rem" />
+
+```mdx
+import { Icon } from '@astrojs/starlight/components';
+
+<Icon name="open-book" label="文档" size="2rem" />
+<Icon name="approve-check" label="已完成" size="2rem" />
+```
+
+名称来自 [Starlight 图标列表](https://starlight.astro.build/reference/icons/)。有信息含义的独立图标应提供 `label`，纯装饰图标可以省略。
+
+## 步骤 Steps
+
+<Steps>
+
+1. **选择文件格式。** 普通说明用 `.md`，组件组合用 `.mdx`。
+2. **编写正文。** 从清晰的目标开始，给出可以复制的操作。
+3. **验证结果。** 构建文档并检查链接与展示效果。
+
+</Steps>
+
+```mdx
+import { Steps } from '@astrojs/starlight/components';
+
+<Steps>
+
+1. **选择文件格式。** 普通说明用 .md，组件组合用 .mdx。
+2. **编写正文。** 给出可以复制的操作。
+3. **验证结果。** 构建文档并检查链接。
+
+</Steps>
+```
+
+`Steps` 包裹的是有序列表，步骤中还可以放代码块和图片。
+
+## 标签页 Tabs 与 TabItem
+
+同一个任务有多种等价做法时，可以放进标签页。下面只演示安装命令；当前项目建议使用已有的 pnpm 锁文件。
+
+<Tabs syncKey="package-manager">
+  <TabItem label="pnpm">
+
+    ```sh
+    pnpm install
+    ```
+
+  </TabItem>
+  <TabItem label="npm">
+
+    ```sh
+    npm install
+    ```
+
+  </TabItem>
+  <TabItem label="Yarn">
+
+    ```sh
+    yarn install
+    ```
+
+  </TabItem>
+</Tabs>
+
+```mdx
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+<Tabs syncKey="package-manager">
+  <TabItem label="pnpm">运行 `pnpm install`。</TabItem>
+  <TabItem label="npm">运行 `npm install`。</TabItem>
+  <TabItem label="Yarn">运行 `yarn install`。</TabItem>
+</Tabs>
+```
+
+`TabItem` 的 `label` 必填。同一主题的多组标签可使用相同的 `syncKey` 和相同标签名称来同步选择。
+
+## 官方参考
+
+- [组件使用入口与导入方式](https://starlight.astro.build/components/using-components/)
+- [提示框](https://starlight.astro.build/components/asides/) · [徽章](https://starlight.astro.build/components/badges/)
+- [卡片](https://starlight.astro.build/components/cards/) · [卡片网格](https://starlight.astro.build/components/card-grids/) · [链接卡片](https://starlight.astro.build/components/link-cards/)
+- [链接按钮](https://starlight.astro.build/components/link-buttons/) · [代码](https://starlight.astro.build/components/code/)
+- [文件树](https://starlight.astro.build/components/file-tree/) · [图标](https://starlight.astro.build/components/icons/)
+- [步骤](https://starlight.astro.build/components/steps/) · [标签页](https://starlight.astro.build/components/tabs/)

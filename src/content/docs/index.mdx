@@ -1,40 +1,42 @@
 ---
-title: Welcome to Starlight
-description: Get started building your docs site with Starlight.
-template: splash # Remove or comment out this line to display the site sidebar on this page.
+title: Astro 文档实验室
+description: 从第一篇文档开始，学习 Markdown 写作与 Starlight 内置 MDX 组件。
 hero:
-  tagline: Congrats on setting up a new Starlight project!
-  image:
-    file: ../../assets/houston.webp
+  title: Astro 文档
+  tagline: 一边看效果，一边复制源码，搭建自己的中文文档站。
   actions:
-    - text: Example Guide
-      link: /guides/example/
+    - text: 添加第一篇文档
+      link: /guides/adding-documents/
       icon: right-arrow
-    - text: Read the Starlight docs
-      link: https://starlight.astro.build
-      icon: external
-      variant: minimal
+    - text: 浏览组件示例
+      link: /examples/components/
+      variant: secondary
 ---
 
-import { Card, CardGrid } from '@astrojs/starlight/components';
+import { Card, CardGrid, LinkCard } from '@astrojs/starlight/components';
 
-## Next steps
+## 从这里开始
 
-<CardGrid stagger>
-	<Card title="Update content" icon="pencil">
-		Edit `src/content/docs/index.mdx` to see this page change.
-	</Card>
-	<Card title="Change page layout" icon="document">
-		Delete `template: splash` in `src/content/docs/index.mdx` to display a
-		sidebar on this page.
-	</Card>
-	<Card title="Add new content" icon="add-document">
-		Add Markdown or MDX files to `src/content/docs` to create new pages.
-	</Card>
-	<Card title="Configure your site" icon="setting">
-		Edit your `sidebar` and other config in `astro.config.mjs`.
-	</Card>
-	<Card title="Read the docs" icon="open-book">
-		Learn more in [the Starlight Docs](https://starlight.astro.build/).
-	</Card>
+这个项目使用 Astro 与 Starlight。页面源码都在 `src/content/docs/` 中；打开源码，可以同时看到写法与网页中的实际效果。
+
+<CardGrid>
+  <LinkCard title="如何添加文档" href="/guides/adding-documents/" description="认识目录、页面地址、frontmatter、侧边栏和本地构建。" />
+  <LinkCard title="Markdown 元素" href="/examples/markdown/" description="试用代码块、提示与警告、表格、图片、列表和折叠内容。" />
+  <LinkCard title="Starlight MDX 组件" href="/examples/components/" description="查看全部 12 个正文组件的效果和可复制用法。" />
+  <LinkCard title="页面配置速查" href="/reference/frontmatter/" description="快速找到标题、排序、目录层级和草稿等常用设置。" />
 </CardGrid>
+
+## 选择合适的写法
+
+<CardGrid>
+  <Card title="日常说明用 Markdown" icon="document">
+    新建 `.md` 文件即可编写正文、代码块、表格和提示框，适合大多数说明文档。
+  </Card>
+  <Card title="组合界面用 MDX" icon="puzzle">
+    新建 `.mdx` 文件，导入内置组件，即可展示标签页、步骤、卡片和可折叠文件树。
+  </Card>
+</CardGrid>
+
+:::tip[推荐阅读顺序]
+先完成“如何添加文档”，再查看 Markdown 和 MDX 示例。每一页都可以作为下一篇文档的起点。
+:::
