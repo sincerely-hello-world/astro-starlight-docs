@@ -80,12 +80,22 @@ locales: {
 - 构建记录：[GitHub Actions](https://github.com/sincerely-hello-world/astro-starlight-docs/actions/workflows/deploy.yml)
 - 首次设置：仓库 **Settings → Pages → Source** 选择 **GitHub Actions**。
 
-```js title="astro.config.mjs · 发布地址"
-site: 'https://sincerely-hello-world.github.io',
-base: '/astro-starlight-docs',
-```
+GitHub Pages 工作流把 `configure-pages` 返回的站点域名和路径分别传入 `SITE_URL`、`BASE_PATH`。普通仓库、用户主页仓库和自定义域名均使用平台实际返回的路径。若构建失败，不会执行发布，已有站点会继续提供服务。
 
-本地预览和线上页面都使用 `/astro-starlight-docs/` 前缀。正文链接、首页按钮以及 MDX 的 `href` 都需要包含此前缀；侧边栏的 `slug` 和自动生成的 `directory` 仍使用文档标识，不加 `base`。若构建失败，不会执行发布，已有站点会继续提供服务。
+## Cloudflare 的根路径与可选子路径
+
+默认入口为 [starlight.luckycyan.com](https://starlight.luckycyan.com/)，不需要申请账户功能。构建时可以设置：
+
+| 构建环境变量 | 默认值 | 用途 |
+| --- | --- | --- |
+| `BASE_PATH` | `/` | 设为 `/docs` 可发布到 `/docs/` |
+| `SITE_URL` | `https://starlight.luckycyan.com` | 换域名时设置成自己的站点地址 |
+
+保持 Build command 为 `pnpm run build`、Deploy command 为 `npx wrangler@latest deploy`。构建脚本根据实际 `BASE_PATH` 生成 `dist-cloudflare/` 的目录结构，完全不使用 `assets.base_path`。使用子路径时，域名根路径会自动跳转到该子路径。
+
+正文和 MDX 的站内 `href` 使用相对页面地址，例如从 `/examples/components/` 链接到 `/guides/adding-documents/`，写成 `../../guides/adding-documents/`。这种写法在根路径、`/docs/` 和 GitHub Pages 仓库路径下都有效。侧边栏的 `slug` 与自动生成的 `directory` 仍使用文档标识。
+
+包名称、仓库名称、Worker 名称和 URL 前缀是不同设置。更改名称不会自动改变 Cloudflare 的访问路径。
 
 ## 官方参考
 

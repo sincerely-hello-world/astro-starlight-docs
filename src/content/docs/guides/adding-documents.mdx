@@ -82,7 +82,7 @@ import { FileTree, Steps } from '@astrojs/starlight/components';
    pnpm astro dev status
    ```
 
-   根据终端输出访问本地地址，默认是 `http://localhost:4321/astro-starlight-docs/`。新页面的路径是 `/astro-starlight-docs/guides/my-first-doc/`。保存文件后，浏览器会更新。
+   根据终端输出访问本地地址，默认是 `http://localhost:4321/`。新页面默认路径是 `/guides/my-first-doc/`。保存文件后，浏览器会更新。
 
    ```sh title="查看日志与停止服务"
    pnpm astro dev logs
@@ -106,16 +106,16 @@ import { FileTree, Steps } from '@astrojs/starlight/components';
 
 ## 文件名怎样变成地址
 
-本项目部署到 GitHub Pages 仓库子路径，已设置 `base: '/astro-starlight-docs'`，因此本地与线上地址都包含此前缀。
+本地开发与 Cloudflare 默认使用域名根路径。下表展示默认地址；设置 `BASE_PATH=/docs` 后，地址会增加 `/docs` 前缀。GitHub Pages 工作流会自动读取其实际发布路径，仓库改名时无需修改正文链接。
 
 | 文档文件 | 页面地址 |
 | --- | --- |
-| `src/content/docs/index.mdx` | `/astro-starlight-docs/` |
-| `src/content/docs/guides/install.md` | `/astro-starlight-docs/guides/install/` |
-| `src/content/docs/guides/advanced/setup.mdx` | `/astro-starlight-docs/guides/advanced/setup/` |
+| `src/content/docs/index.mdx` | `/` |
+| `src/content/docs/guides/install.md` | `/guides/install/` |
+| `src/content/docs/guides/advanced/setup.mdx` | `/guides/advanced/setup/` |
 
 :::caution[路径与重命名]
-建议文件名使用英文小写和短横线，页面标题可以使用中文。重命名文件或修改 `slug` 会改变地址，需要同步检查站内链接。本项目已配置 GitHub Pages 的 `site`、`base` 和链接前缀；以后修改仓库名或域名时，需要一起调整。
+建议文件名使用英文小写和短横线，页面标题可以使用中文。重命名文件或修改 `slug` 会改变地址，需要同步检查站内链接。正文使用相对于当前页面地址的链接，例如本页到组件页使用 `../../examples/components/`。不要把仓库名写进站内链接；本地、Cloudflare 和 GitHub Pages 可以共用这些内容。
 :::
 
 ## 什么时候改用 MDX
@@ -134,7 +134,7 @@ import { Aside, LinkCard } from '@astrojs/starlight/components';
   Starlight 已集成 MDX 支持，无需为这些内置组件安装 React。
 </Aside>
 
-<LinkCard title="查看完整组件示例" href="/astro-starlight-docs/examples/components/" />
+<LinkCard title="查看完整组件示例" href="../../examples/components/" />
 ```
 
 :::note[MDX 的特殊字符]
@@ -167,7 +167,7 @@ sidebar: [
 
 ## 下一步与官方资料
 
-- [Markdown 元素示例](/astro-starlight-docs/examples/markdown/)：复制常用内容语法。
-- [MDX 内置组件示例](/astro-starlight-docs/examples/components/)：查看全部正文组件。
-- [页面配置速查](/astro-starlight-docs/reference/frontmatter/)：修改排序、目录和草稿状态。
+- [Markdown 元素示例](../../examples/markdown/)：复制常用内容语法。
+- [MDX 内置组件示例](../../examples/components/)：查看全部正文组件。
+- [页面配置速查](../../reference/frontmatter/)：修改排序、目录和草稿状态。
 - 官方：[Astro 内容集合](https://docs.astro.build/en/guides/content-collections/)、[Starlight 页面](https://starlight.astro.build/guides/pages/)、[侧边栏导航](https://starlight.astro.build/guides/sidebar/)。

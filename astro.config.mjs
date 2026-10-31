@@ -2,10 +2,14 @@
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
 
+// URL paths are deployment settings, independent of package and Worker names.
+const base = `/${(process.env.BASE_PATH ?? '').trim().split('/').filter(Boolean).join('/')}`;
+
 // https://astro.build/config
 export default defineConfig({
-	site: 'https://sincerely-hello-world.github.io',
-	base: '/astro-starlight-docs',
+	site: process.env.SITE_URL || 'https://starlight.luckycyan.com',
+	base,
+	trailingSlash: 'always',
 	// FileTree uses satteri's native binding; keep it in Node during prerendering.
 	vite: { ssr: { external: ['satteri'] } },
 	integrations: [

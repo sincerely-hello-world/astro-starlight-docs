@@ -9,14 +9,14 @@ sidebar:
 
 ## 标题、文字与链接
 
-用 **加粗** 强调重点，用 *斜体* 补充语气，用 `pnpm build` 表示命令。阅读[添加文档教程](/astro-starlight-docs/guides/adding-documents/)，或者跳转到本页的[表格](#表格)。
+用 **加粗** 强调重点，用 *斜体* 补充语气，用 `pnpm build` 表示命令。阅读[添加文档教程](../../guides/adding-documents/)，或者跳转到本页的[表格](#表格)。
 
 ```md
 ## 二级标题
 ### 三级标题
 
 用 **加粗** 强调重点，用 *斜体* 补充语气，用 `pnpm build` 表示命令。
-[添加文档教程](/astro-starlight-docs/guides/adding-documents/)
+[添加文档教程](../../guides/adding-documents/)
 ```
 
 页面主标题由 frontmatter 的 `title` 生成，正文通常从 `##` 开始。
@@ -160,7 +160,7 @@ src/
 └── content.config.ts
 ```
 
-需要文件图标、注释和目录折叠时，使用 [MDX 的 FileTree 组件](/astro-starlight-docs/examples/components/#文件树-filetree)。
+需要文件图标、注释和目录折叠时，使用 [MDX 的 FileTree 组件](../components/#文件树-filetree)。
 
 ## 图片
 
@@ -172,7 +172,7 @@ src/
 ![Astro 宇航员 Houston，漂浮在深色背景中。](../../../assets/houston.webp)
 ```
 
-放在 `public/` 的资源使用从站点根开始的路径。本项目配置了仓库子路径，例如已有的站点图标是 `/astro-starlight-docs/favicon.svg`。请为有信息含义的图片填写有意义的替代文字。
+本项目的站内链接使用页面之间的相对地址，以适配根路径与子路径部署。组件中引用 `public/` 资源时，可以用 `import.meta.env.BASE_URL` 拼接资源名，使其包含当前部署前缀。请为有信息含义的图片填写有意义的替代文字。
 
 ## 折叠内容
 
@@ -195,4 +195,4 @@ src/
 ## 继续阅读
 
 - [Starlight Markdown 官方指南](https://starlight.astro.build/guides/authoring-content/)
-- [MDX 内置组件示例](/astro-starlight-docs/examples/components/)
+- [MDX 内置组件示例](../components/)
