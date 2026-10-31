@@ -95,6 +95,31 @@ BASE_PATH=/docs pnpm preview
 
 此方式不使用需要账户开通的非根路径 `assets.base_path`。遇到错误 `100343` 时，确认构建使用的是包含此修复的最新提交。GitHub Pages 仍发布 `dist/`，使用工作流自动传入的 Pages 路径。
 
+## 提交身份与贡献者归属
+
+GitHub 通过提交中的作者邮箱关联账号。仓库所有者、SSH 推送账号和提交作者是不同的概念：能够推送，不代表提交会自动归入该账号。
+
+首次在自己的电脑上提交时，先检查当前仓库的身份：
+
+```sh
+git config --show-origin --get user.name
+git config --show-origin --get user.email
+git var GIT_AUTHOR_IDENT
+```
+
+在 [GitHub Settings → Emails](https://github.com/settings/emails) 找到自己的已关联邮箱或 GitHub 隐私邮箱，并为当前仓库设置：
+
+```sh
+git config --local user.name "你的显示名称"
+git config --local user.email "你的 GitHub 提交邮箱"
+```
+
+GitHub 隐私邮箱通常使用 `账号数字ID+用户名@users.noreply.github.com` 格式，以账号设置中显示的地址为准。本地配置只影响之后的新提交，不会追溯修改旧提交。
+
+若历史提交使用了自己拥有但尚未关联的邮箱，可将该邮箱添加到 GitHub 账号，按页面要求完成验证，让 GitHub 重新关联历史贡献。贡献者统计可能需要时间刷新。模板初始提交保留 Astro 创建工具的原作者身份。
+
+参考：[GitHub 提交邮箱设置](https://docs.github.com/en/account-and-profile/how-tos/email-preferences/setting-your-commit-email-address)、[贡献记录缺失排查](https://docs.github.com/en/account-and-profile/how-tos/contribution-settings/troubleshooting-missing-contributions)。
+
 ## 官方资料
 
 - [Astro 文档](https://docs.astro.build/zh-cn/)
